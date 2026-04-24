@@ -129,9 +129,9 @@ async def login_for_access_token(
         client_id     -> form_data.client_id
         client_secret -> form_data.client_secret
     """
-    log.debug("Starting Authentication for client...")
-    log.debug(f"[Authentication] Client ID {form_data.client_id}")
-    log.debug(f"[Authentication] Client Secret {form_data.client_secret}")
+    #log.debug("Starting Authentication for client...")
+    #log.debug(f"[Authentication] Client ID {form_data.client_id}")
+    #log.debug(f"[Authentication] Client Secret {form_data.client_secret}")
     client = authenticate_client(form_data.client_id, form_data.client_secret)
     if not client:
         raise HTTPException(
