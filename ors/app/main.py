@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.responses import RedirectResponse
 from openai import RateLimitError, APIError 
 from ors.llm.llm_loader import LLMFactory
 from ors.llm.orouter_inv import get_free_models 
@@ -34,6 +35,11 @@ async def lifespan(app: FastAPI):
     app.state.free_models = []
 
 app = FastAPI(title=constants.app_name, lifespan=lifespan)
+
+
+@app.get("/", include_in_schema=False)
+async def root():
+    return RedirectResponse("/docs")
 
 @app.get("/health")
 async def health():
