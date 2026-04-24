@@ -1,0 +1,30 @@
+google:
+  - id:  google/gemma-3-27b-it:free
+    tier: free
+    context: 8192
+  - id: google/gemma-4-31b-it:free
+    tier: free
+    context: 32768
+
+llama:
+  - id: meta-llama/llama-3.3-70b-instruct:free
+    tier: free
+    context: 65536
+
+nvidia:
+  - id: nvidia/nemotron-3-super-120b-a12b:free
+    tier: free
+    context: 262144
+
+openai:
+  - id: openai/gpt-oss-120b:free
+    tier: free
+    context: 131072
+  - id: openai/gpt-oss-20b:free
+    tier: free
+    context: 8192
+
+qwen:
+  - id: qwen/qwen3-coder:free
+    tier: free
+    context: 262144
