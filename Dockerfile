@@ -36,4 +36,4 @@ COPY --chown=user:user . .
 EXPOSE 7860
 
 # Start FastAPI with uvicorn on port 7860
-CMD ["uvicorn", "ors.app:main", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["uvicorn", "ors.app.main:app", "--host", "0.0.0.0", "--port", "7860"]
