@@ -6,7 +6,7 @@ from ors.utils.logging_utils import (
 )
 
 log = get_logger(__name__)
-set_log_level(DEBUG)
+#set_log_level(DEBUG)
 
 @dataclass
 class ModelInfo:
