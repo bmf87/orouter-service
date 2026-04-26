@@ -31,6 +31,13 @@ class ClientCredentials(BaseModel):
 def authenticate_client(client_id: str, client_secret: str) -> Optional[Client]:
     """
     Simple client-id/secret check. May replace in future with more complex logic.
+
+    Args:
+        client_id: str - Client ID to authenticate
+        client_secret: str - Client secret to authenticate
+    
+    Returns:
+        Optional[Client] - Client object if authentication is successful, None otherwise    
     """
     log.debug(f"[Authentication] Client ID {client_id}")
     valid_secret = VALID_CLIENTS.get(client_id)
@@ -47,6 +54,12 @@ def authenticate_client(client_id: str, client_secret: str) -> Optional[Client]:
 def create_access_token(client: Client) -> str:
     """
     Create a signed JWT for the client.
+
+    Args:
+        client: Client - Client object with client_id
+    
+    Returns:
+        str - JWT access token
     """
     now = datetime.now(timezone.utc)
     exp = now + JWT_ACCESS_TOKEN_EXPIRE
@@ -66,6 +79,12 @@ bearer_scheme = HTTPBearer(auto_error=True)
 def get_current_client(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),) -> Client:
     """
     FastAPI dependency to validate the bearer token on any protected endpoints.
+
+    Args:
+        credentials: HTTPAuthorizationCredentials - Bearer token from the request header
+    
+    Returns:
+        Client - Client object with client_id
     """
     token = credentials.credentials
     try:

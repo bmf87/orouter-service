@@ -49,7 +49,13 @@ CONVERSATION_ASSISTANT_PROMPT = ChatPromptTemplate.from_messages([
 
 def get_prompt_template(name: str) -> ChatPromptTemplate:
     """
-    Registry function to pull the correct templates by string key.
+    Registry function to retrieve the correct templates by string key.
+    
+    Args:
+        name: str - name of the template to retrieve
+    
+    Returns:
+        ChatPromptTemplate - the template to use
     """
     templates = {
         constants.TEMPLATE_TYPE_BASIC: BASIC_ASSISTANT_PROMPT,

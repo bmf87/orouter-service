@@ -16,6 +16,13 @@ def invoke_llm(
     """
     Invokes the LLM using separated Langchain templates and LCEL (LangChain Expression Language).
     
+    Args:
+        llm: The LLM to use
+        prompt_type: The type of prompt to use
+        prompt_kwargs: The arguments to pass to the prompt
+    
+    Returns:
+        str: The response from the LLM
     """
     if prompt_kwargs is None:
         prompt_kwargs = {}
@@ -30,6 +37,9 @@ def invoke_llm(
         response = chain.invoke(prompt_kwargs)
         response_message = response.content
         return response_message
+    except (RateLimitError, APIError):
+        # Propagate OpenRouter/OpenAI exception natively back to the router for proper error handling
+        raise
     except Exception as e:
         log.error(f"[Unexpected Exception - {type(e).__name__}] Encountered: {e}")
         # Fallback for anything unexpected

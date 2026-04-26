@@ -23,7 +23,7 @@ set_log_level(DEBUG)
 async def lifespan(app: FastAPI):
     log.info(f"[Startup] {app.title} loading free models...")
     
-    # app.state: Starlette's custom State object (not a plain dict. 
+    # app.state: Starlette's custom State object (not a plain dict). 
     # Just assign attributes natively.
     app.state.free_models = []
     app.state.llm_factory = None

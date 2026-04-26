@@ -50,8 +50,8 @@ def is_free(model: Dict[str, Any]) -> bool:
 
 def get_free_models() -> Dict[str, List[ModelInfo]]:
     """
-    Fetches all available models and categorizes them by provider identically 
-    to the api_config.py structure.
+    Fetches all available models and categorizes them by provider, matching the 
+    api_config.py structure to use same model loading logic.
 
     Returns:
         Dict[str, List[ModelInfo]]: Maps providers to their available free models.

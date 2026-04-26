@@ -2,7 +2,7 @@
 set -e
 
 # 
-# Finds (via pattern matching) and executes all tests in the tests directory.
+# Script to find (via pattern matching) and execute all tests in the tests directory.
 # Usage: ./run_tests.sh
 #
 #
