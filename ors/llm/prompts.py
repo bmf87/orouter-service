@@ -46,6 +46,44 @@ CONVERSATION_ASSISTANT_PROMPT = ChatPromptTemplate.from_messages([
         ),
     ),
 ])
+# Agentic prompts
+PLANNER_PROMPT = ChatPromptTemplate.from_messages([
+    ("system",
+     "You are a planning agent. Break the user's goal into an ordered list "
+     "of clear, concrete sub-tasks. Be specific, but keep the list concise."),
+    ("user",
+     "User goal:\n{goal}\n\n"
+     "Return ONLY the list of sub-tasks, each on its own line, numbered.")
+])
+RESEARCHER_PROMPT = ChatPromptTemplate.from_messages([
+    ("system",
+     "You are a research agent. For each sub-task, you gather detailed notes, "
+     "key points, and examples relevant to the overall goal."),
+    ("user",
+     "Overall goal:\n{goal}\n\n"
+     "Sub-task:\n{task}\n\n"
+     "Provide thorough notes, but avoid writing the final document.")
+])
+WRITER_PROMPT = ChatPromptTemplate.from_messages([
+    ("system",
+     "You are a writing agent. Using the plan and research notes, write a "
+     "coherent, well-structured document aligned with the user's goal."),
+    ("user",
+     "User goal:\n{goal}\n\n"
+     "Plan:\n{plan}\n\n"
+     "Research notes:\n{notes}\n\n"
+     "Write the final document.")
+])
+REVIEWER_PROMPT = ChatPromptTemplate.from_messages([
+    ("system",
+     "You are a reviewer agent. Critique the draft and suggest concrete "
+     "improvements for structure, clarity, and completeness."),
+    ("user",
+     "User goal:\n{goal}\n\n"
+     "Draft:\n{draft}\n\n"
+     "Provide a structured review with strengths, weaknesses, and specific edits.")
+])
+
 
 def get_prompt_template(name: str) -> ChatPromptTemplate:
     """
@@ -61,8 +99,10 @@ def get_prompt_template(name: str) -> ChatPromptTemplate:
         constants.TEMPLATE_TYPE_BASIC: BASIC_ASSISTANT_PROMPT,
         constants.TEMPLATE_TYPE_CONVERSATION: CONVERSATION_ASSISTANT_PROMPT,
         constants.TEMPLATE_TYPE_SUMMARIZATION: SUMMARIZATION_PROMPT,
-        # Other templates, as needed
-        # "code_review": CODE_REVIEW_PROMPT,
+        constants.TEMPLATE_TYPE_PLANNER: PLANNER_PROMPT,
+        constants.TEMPLATE_TYPE_RESEARCHER: RESEARCHER_PROMPT,
+        constants.TEMPLATE_TYPE_WRITER: WRITER_PROMPT,
+        constants.TEMPLATE_TYPE_REVIEWER: REVIEWER_PROMPT,
         
     }
     # Fallback to 'basic'

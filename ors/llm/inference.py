@@ -3,10 +3,10 @@ from fastapi import HTTPException
 from openai import RateLimitError, APIError 
 from typing import Dict, Any
 from ors.llm.prompts import get_prompt_template
-from ors.utils.logging_utils import get_logger, set_log_level
+from ors.utils.logging_utils import get_logger, set_log_level, DEBUG
 
 log = get_logger(__name__)
-
+set_log_level(DEBUG)
 
 def invoke_llm(
     llm: ChatOpenAI, 
@@ -31,11 +31,12 @@ def invoke_llm(
     try:
         # Retrieve prompt based on template type
         template = get_prompt_template(prompt_type)
-        
+        log.debug(f"[Prompt Template] {template}")
         # Bind template to LLM (LCEL pattern)
         chain = template | llm
         response = chain.invoke(prompt_kwargs)
         response_message = response.content
+        log.debug(f"[Response Message] {response_message}")
         return response_message
     except (RateLimitError, APIError):
         # Propagate OpenRouter/OpenAI exception natively back to the router for proper error handling

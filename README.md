@@ -19,4 +19,8 @@ The service runs on a deeply decoupled architectural pipeline to ensure maximum 
 
 Incoming HTTP requests are strictly gated by the internal **Security Validator** (`auth.py`) which dynamically issues and verifies stateless JWT payloads via the `/token` endpoint before clearing any subsequent transactions. Once cleared, authorized requests are piped directly into the **LLM Factory** (`llm_loader.py`)— a highly configurable module that verifies repository access arrays and instantly spins up isolated LangChain `ChatOpenAI` classes tailored exactly for OpenRouter endpoints. The factory inherently captures and translates complex multi-layered upstream API issues (like hidden vendor-side 429 rate limits trapped inherently as generic 502s) into clean, transparent HTTP exceptions.
 
+## Agentic Workflow Support
+
+The service is specifically designed to support complex, multi-step agentic workflows. The core chat endpoint (`chat.py`) accepts a flexible `prompt_kwargs` payload, allowing clients to dynamically inject arbitrary context variables (e.g., `{goal}`, `{task}`, `{plan}`, `{notes}`) directly into prompt templates at runtime. This allows upstream agents to maintain extensive conversational memory and task context without requiring rigid or hardcoded schema modifications on the gateway.
+
 [![API Docs](https://img.shields.io/badge/OpenAPI-View%20Docs-blue?logo=swagger)](https://bfavro73-oroutersrv.hf.space/docs)

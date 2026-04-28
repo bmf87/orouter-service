@@ -2,18 +2,18 @@ from fastapi import (
     APIRouter, Depends, Request,
     HTTPException, status
 )
-from pydantic import BaseModel 
+from typing import Any, Dict, Optional
+from pydantic import BaseModel, Field
 from openai import RateLimitError, APIError
 
 from ors.security.auth import Client, get_current_client
 from ors.llm.llm_loader import LLMFactory
 from ors.llm.inference import invoke_llm
-from ors.llm.orouter_inv import get_free_models 
 from ors.utils.logging_utils import get_logger, set_log_level, DEBUG
 from ors import constants
 
 log = get_logger(__name__)
-#set_log_level(DEBUG)
+set_log_level(DEBUG)
 
 router = APIRouter(
     prefix="/chat",
@@ -25,8 +25,9 @@ class ChatRequest(BaseModel):
     model_id: str = constants.default_model
     prompt_type: str = "basic"
     user_prompt: str
-    conversation_summary: str | None = None
-    extra_system_instructions: str | None = None
+    conversation_summary: Optional[str] = None
+    extra_system_instructions: Optional[str] = None
+    prompt_kwargs: dict[str, Any] = Field(default_factory=dict)
 
 class SummarizeRequest(BaseModel):
     free_models: bool = True
@@ -35,8 +36,8 @@ class SummarizeRequest(BaseModel):
 
 @router.post("/completions")
 async def chat(
-    request: Request, 
     body: ChatRequest, 
+    request: Request, 
     current_client: Client = Depends(get_current_client)):
     
     log.debug(f"[Chat] Received request for model {body.model_id} with prompt: {body.user_prompt}")
@@ -48,8 +49,10 @@ async def chat(
             "conversation_summary": body.conversation_summary or "",
             "extra_system_instructions": body.extra_system_instructions or "",
         }
+        # Merge in extra kwargs from client, e.g. {goal}, {task}, {plan}, {notes}, {draft}, etc.
+        prompt_kwargs.update(body.prompt_kwargs or {})
+        log.debug(f"[Chat] Prompt kwargs: {prompt_kwargs}")
         response = invoke_llm(orouter_llm, body.prompt_type, prompt_kwargs)
-        #response = llm.invoke(user_prompt)
         # already string
         return response
     except RateLimitError as e:

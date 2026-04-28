@@ -15,3 +15,9 @@ openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
 TEMPLATE_TYPE_BASIC = "basic"
 TEMPLATE_TYPE_CONVERSATION = "conversation"
 TEMPLATE_TYPE_SUMMARIZATION = "summarization"
+
+# Agentic Prompt Template Types
+TEMPLATE_TYPE_PLANNER = "planner"
+TEMPLATE_TYPE_RESEARCHER = "researcher"
+TEMPLATE_TYPE_WRITER = "writer"
+TEMPLATE_TYPE_REVIEWER = "reviewer"

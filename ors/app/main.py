@@ -40,6 +40,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title=constants.app_name, lifespan=lifespan)
 app.include_router(model.router)
 app.include_router(chat.router)
+#app.include_router(test_chat.router)
 
 @app.get("/", include_in_schema=False)
 async def root():
