@@ -9,7 +9,7 @@ from ors.security.auth import Client, get_current_client
 from ors import constants
 
 log = get_logger(__name__)
-set_log_level(DEBUG)
+#set_log_level(DEBUG)
 
 router = APIRouter(
     prefix="/model",

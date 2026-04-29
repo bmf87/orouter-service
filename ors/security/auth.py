@@ -12,7 +12,7 @@ from ors.config.auth_config import (
 
 
 log = get_logger(__name__)
-set_log_level(DEBUG)
+#set_log_level(DEBUG)
 
 class Token(BaseModel):
     access_token: str
@@ -21,11 +21,6 @@ class Token(BaseModel):
 # Identity model for JWT
 class Client(BaseModel):
     client_id: str
-
-# Identity model for client credentials
-class ClientCredentials(BaseModel):
-    client_id: str
-    client_secret: str
 
 
 def authenticate_client(client_id: str, client_secret: str) -> Optional[Client]:

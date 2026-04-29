@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException, Depends, Request, status
+from fastapi import FastAPI, Form, HTTPException, Depends, Request, status
 from fastapi.routing import APIRoute
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import RedirectResponse
@@ -10,13 +10,24 @@ from ors.llm.llm_loader import LLMFactory
 from ors.llm.orouter_inv import get_free_models 
 from ors.utils.logging_utils import get_logger, set_log_level, DEBUG
 from ors.security.auth import (
-    authenticate_client, create_access_token, Client,
-    ClientCredentials, get_current_client, Token
+    authenticate_client, create_access_token, 
+    Client, get_current_client, Token
 )
 from ors import constants
 
 log = get_logger(__name__)
-set_log_level(DEBUG)
+#set_log_level(DEBUG)
+
+class ClientIDForm:
+    def __init__(
+        self,
+        client_id: str = Form(...),
+        client_secret: str = Form(...),
+        grant_type: str | None = Form(None),
+    ):
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.grant_type = grant_type
 
 
 @asynccontextmanager
@@ -30,7 +41,7 @@ async def lifespan(app: FastAPI):
     
     app.state.free_models = get_free_models()
     log.info(f"[Startup] {app.title} loaded {len(app.state.free_models)} free models.")
-    log.info(f"[Startup] {app.title}\Models loaded:\n {app.state.free_models}")
+    log.info(f"[Startup] {app.title}\n Models loaded:\n {app.state.free_models}")
     app.state.llm_factory = LLMFactory(dynamic_free_model_repo=app.state.free_models)
     
     yield
@@ -66,9 +77,10 @@ async def service_info(request: Request,
 async def health(current_client: Client = Depends(get_current_client)):
     return {"status": "ok"} 
 
+
 @app.post("/token", response_model=Token,  tags=["default"])
 async def login_for_access_token(
-    form_data: OAuth2PasswordRequestForm = Depends(),
+    form_data: ClientIDForm = Depends(),
 ):
     """
     Issue a token using client_id/client_secret.

@@ -13,7 +13,7 @@ from ors.utils.logging_utils import get_logger, set_log_level, DEBUG
 from ors import constants
 
 log = get_logger(__name__)
-set_log_level(DEBUG)
+#set_log_level(DEBUG)
 
 router = APIRouter(
     prefix="/chat",
