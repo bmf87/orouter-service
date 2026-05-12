@@ -42,7 +42,7 @@ def authenticate_client(client_id: str, client_secret: str) -> Optional[Client]:
     if client_secret != valid_secret:
         log.error(f"[Authentication Failed] Invalid client secret for client ID {client_id}")
         return None
-    log.info(f"[Authentication Success] Client ID {client_id} authenticated")
+    log.info(f"[Authentication Success] Client ID authenticated")
     return Client(client_id=client_id)
 
 
@@ -85,7 +85,7 @@ def get_current_client(credentials: HTTPAuthorizationCredentials = Depends(beare
     try:
         payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
         client_id: str = payload.get("sub")
-        log.info(f"[Token Validation] Client ID {client_id} found in get_current_client")
+        log.info(f"[Token Validation] Client ID found in get_current_client")
         if client_id is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

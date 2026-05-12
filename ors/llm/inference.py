@@ -6,7 +6,7 @@ from ors.llm.prompts import get_prompt_template
 from ors.utils.logging_utils import get_logger, set_log_level, DEBUG
 
 log = get_logger(__name__)
-set_log_level(DEBUG)
+#set_log_level(DEBUG)
 
 def invoke_llm(
     llm: ChatOpenAI, 

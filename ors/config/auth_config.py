@@ -4,7 +4,7 @@ from datetime import timedelta
 from ors.utils.logging_utils import get_logger, set_log_level, DEBUG
 
 log = get_logger(__name__)
-set_log_level(DEBUG)
+#set_log_level(DEBUG)
 
 load_dotenv(find_dotenv("orouter-service.env"))
 
